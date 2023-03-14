@@ -5,7 +5,8 @@ shinyUI(
                 dashboardHeader(title = "Exploratory Analysis", titleWidth = 400), 
                 dashboardSidebar(
                   sidebarMenu(
-                    menuItem("Initialise Data", tabName = "Init_data_tab", icon=icon("check"))
+                    menuItem("Initialise Data", tabName = "Init_data_tab", icon=icon("check")),
+                    menuItem("Data Preparation", tabName = "data_prep", icon=icon("check"))
                   )
                   
                   
@@ -29,6 +30,35 @@ shinyUI(
                                 tabPanel("Quick Summary",verbatimTextOutput("summary"))
                                 )
                        )
+                    ),
+                    
+                    tabItem(
+                      tabName = "data_prep",
+                      tabsetPanel(
+                        type="tab",
+                        tabPanel("Missing Values",
+                                  tabBox(
+                                    tabPanel("Quantitative",
+                                             #visulaisation des valeur manquant dynamique
+                                      plotOutput("display_missing"),
+                                      uiOutput("quant_var_list"),
+                                      fluidRow(actionButton("quant_rv_mean","Click here to handle using the MEAN methode")),
+                                      fluidRow(actionButton("quant_rv_median","Click here to handle using the MEDIAN methode")),
+                                      fluidRow(actionButton("quant_rv_intrp","Click here to handle using the SPLINE INTERPOLATION methode")),
+                                      fluidRow(actionButton("quant_rv_col","Click here to Delete the column if the percentage exceeds 30% ")),
+                                      uiOutput("quant_rv_plt")
+                                    ),
+                                    tabPanel("Qualitative",
+                                      
+                                    )
+                                    
+                                  )
+                                 ),
+                        tabPanel("Outliers",verbatimTextOutput("str")),
+                        tabPanel("Normalisation",tableOutput("data")),
+                        tabPanel("Class Rebalance",plotOutput("myhist"))
+                      ),
+                      
                     )
                   )
                   
