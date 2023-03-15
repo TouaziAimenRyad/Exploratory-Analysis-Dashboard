@@ -24,8 +24,11 @@ real_time_data<-function(input,output,data)
 
 # what i need to do in missing values !!!!!!!!!!! 
   # uioutput plots and missing valplots to be displayed after each action 
+  # add an all column choice to handle all of the cols at once
    
 # what do i need to do outliers
+  # make a conditon to wait until handling missing values 
+  # add an all cols choice 
 
 
 init_data_view<-function(input,output,data) # adds the Ui that we want to be displayed after uploading the data set 
@@ -63,7 +66,18 @@ init_data_view<-function(input,output,data) # adds the Ui that we want to be dis
     )
   })
   
+  #select variable for handeling outliers for quantitative data 
+  output$out_var_list = renderUI({
+    box(id="out_param",selectInput('out_var_list', 'Select the variable to remove the outliers from',names(data)[sapply(data, is.numeric)]),sliderInput("out_thr", "Outlier threshold:", min = 0, max = 100, value = 5))
+    
+  })
   
+  
+  #select variable for normalization for quantitative data 
+  output$norm_var_list = renderUI({
+    selectInput('norm_var_list', 'Select the variable to normalize',names(data)[sapply(data, is.numeric)]
+    )
+  })
   #visulazing missing data to be put in the display funnction to be created later  as ui output 
         
 }
@@ -90,6 +104,8 @@ read_dataSet<-function(input,output,initial_data,data)
 }
 
 
+
+#################################################################################################################"#########
 
 
 handeling_missing_values_quant<-function(input,output,data) # add a condition so it happens only when we have select col
@@ -314,8 +330,96 @@ handeling_missing_values_qual<-function(input,output,data) #both NA and empty st
    
   })
   
+}
+
+
+handle_missing_values<-function(input,output,data)
+{
+  handeling_missing_values_quant(input,output,data)
+  handeling_missing_values_qual(input ,output,data)
+}
+
+##########################################################################################################################
+
+
+handle_outliers<-function(input,output,data)
+{
+  observeEvent(input$out_rv,{
+    df=data()
+    if(!is.null(input$out_var_list))
+    {
+      if(input$out_var_list!="")
+      {
+        col<-df[,input$out_var_list]
+        q1 <- quantile(col, 0.25,na.rm = TRUE)#na.rm incase there's missing values 
+        q3 <- quantile(col, 0.75,na.rm = TRUE)
+        iqr <- q3 - q1
+        lower_bound <- q1 - input$out_thr * iqr / 100
+        upper_bound <- q3 + input$out_thr * iqr / 100
+        df<-df %>% filter(col >= lower_bound & col <= upper_bound)
+        
+        #output$out_plot<- ggplot(aes(x = my_col)) +
+        #   geom_density() +
+        #   ggtitle("Distribution of column values after removing outliers")
+      }
+    }
+    data(df)
+    real_time_data(input,output,data())
+    # exploration_server(input,output,data())
+    # univaree_server(input,output, data())
+    # Bivaree_server(input,output, data())
+    # Qnt_Qlt_server(input,output, data())
+    # Qlt_Qlt_server(input,output, data())
+    # Modele_server(input, output, data())
+    #print("les valeurs manquantes sont imputées")
+  })
+}
+
+
+##################################################################################################""
+
+normalisation<-function(input,output,data)
+{
+  observeEvent(input$norm_z_scr,{
+    df=data()
+    if(!is.null(input$norm_var_list))
+    {
+      if(input$norm_var_list!="")
+      {
+        
+      }
+    }
+    data(df)
+    real_time_data(input,output,data())
+    # exploration_server(input,output,data())
+    # univaree_server(input,output, data())
+    # Bivaree_server(input,output, data())
+    # Qnt_Qlt_server(input,output, data())
+    # Qlt_Qlt_server(input,output, data())
+    # Modele_server(input, output, data())
+    #print("les valeurs manquantes sont imputées")
+  })
   
   
+  observeEvent(input$norm_min_max,{
+    df=data()
+    if(!is.null(input$norm_var_list))
+    {
+      if(input$norm_var_list!="")
+      {
+        
+      }
+    }
+    data(df)
+    real_time_data(input,output,data())
+    # exploration_server(input,output,data())
+    # univaree_server(input,output, data())
+    # Bivaree_server(input,output, data())
+    # Qnt_Qlt_server(input,output, data())
+    # Qlt_Qlt_server(input,output, data())
+    # Modele_server(input, output, data())
+    #print("les valeurs manquantes sont imputées")
+  })
 }
 
 
@@ -387,9 +491,8 @@ shinyServer(
     
 ########################################################################################"
     # data visualisation for missing values is comman
-    handeling_missing_values_quant(input,output,data)
-    handeling_missing_values_qual(input ,output,data)
+    handle_missing_values(input,output,data)
 ###############################################################################        
-
+    handle_outliers(input,output,data)
   }
 )

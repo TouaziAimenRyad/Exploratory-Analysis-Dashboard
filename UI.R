@@ -58,8 +58,18 @@ shinyUI(
                                     
                                   )
                                  ),
-                        tabPanel("Outliers",verbatimTextOutput("str")),
-                        tabPanel("Normalisation",tableOutput("data")),
+                        tabPanel("Outliers",
+                                 uiOutput("out_var_list"),
+                                 fluidRow(actionButton("out_rv","Click here to remove Outliers")),
+                                 uiOutput("out_plot")
+                                 ),
+                        tabPanel("Normalisation",
+                                 uiOutput("norm_var_list"),
+                                 fluidRow(actionButton("norm_z_scr","Click here to normalize using z_socre  ")),
+                                 fluidRow(actionButton("norm_min_max","Click here to normalize using Min-Max")),
+                                 uiOutput("norm_plot")
+                                 
+                                 ),
                         tabPanel("Class Rebalance",plotOutput("myhist"))
                       ),
                       
