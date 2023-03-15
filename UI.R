@@ -6,7 +6,8 @@ shinyUI(
                 dashboardSidebar(
                   sidebarMenu(
                     menuItem("Initialise Data", tabName = "Init_data_tab", icon=icon("check")),
-                    menuItem("Data Preparation", tabName = "data_prep", icon=icon("check"))
+                    menuItem("Data Preparation", tabName = "data_prep", icon=icon("check")),
+                    menuItem("Real Time Data", tabName = "real_time", icon=icon("check"))
                   )
                   
                   
@@ -37,10 +38,10 @@ shinyUI(
                       tabsetPanel(
                         type="tab",
                         tabPanel("Missing Values",
+                                 #visulaisation des valeur manquant dynamique
+                                 uiOutput("display_missing"),
                                   tabBox(
                                     tabPanel("Quantitative",
-                                             #visulaisation des valeur manquant dynamique
-                                      plotOutput("display_missing"),
                                       uiOutput("quant_var_list"),
                                       fluidRow(actionButton("quant_rv_mean","Click here to handle using the MEAN methode")),
                                       fluidRow(actionButton("quant_rv_median","Click here to handle using the MEDIAN methode")),
@@ -49,7 +50,10 @@ shinyUI(
                                       uiOutput("quant_rv_plt")
                                     ),
                                     tabPanel("Qualitative",
-                                      
+                                      uiOutput("qual_var_list"),
+                                      fluidRow(actionButton("qual_rv_mode","Click here to handle using the MODE methode")),
+                                      fluidRow(actionButton("qual_rv_col","Click here to Delete the column if the percentage exceeds 30% ")),
+                                      uiOutput("qual_rv_plt")
                                     )
                                     
                                   )
@@ -59,6 +63,9 @@ shinyUI(
                         tabPanel("Class Rebalance",plotOutput("myhist"))
                       ),
                       
+                    ),
+                    tabItem(tabName = "real_time",
+                      box(id="real_t_d",div(DT::dataTableOutput("real_time_data_tb")))
                     )
                   )
                   
