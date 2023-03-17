@@ -90,8 +90,26 @@ shinyUI(
                                        tableOutput("quant_detail")),
                               tabPanel("Qualitative Variables",
                                        tableOutput("qual_detail")),
-                              tabPanel("Detailed Summary"),
-                              tabPanel("Data Correlation"),
+                              tabPanel("Detailed Summary",
+                                       htmlOutput("sumarize"),
+                                       #verbatimTextOutput("summerize2")
+                                       ),
+                              tabPanel("Data Correlation",
+                                       sidebarLayout(
+                                         
+                                         sidebarPanel(
+
+                                           uiOutput("corr_col1"),
+                                           uiOutput("corr_col2"),
+                                           actionButton("corr_str","GO!")
+                                         ),
+                                         
+                                         mainPanel(
+                                           plotOutput("correlation_plot")
+                                         )
+                                       ),
+                                       #fluidRow(box("heatmap"))
+                                       ),
                               tabPanel("Rename Columns")
                             )
                     ),

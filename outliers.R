@@ -20,19 +20,21 @@ handle_outliers<-function(input,output,data)
         #output$out_plot<- ggplot(aes(x = my_col)) +
         #   geom_density() +
         #   ggtitle("Distribution of column values after removing outliers")
+        data(df)
+        
+        real_time_data(input,output,data())
+        data_exploration(input,output,data())
+        
+        # exploration_server(input,output,data())
+        # univaree_server(input,output, data())
+        # Bivaree_server(input,output, data())
+        # Qnt_Qlt_server(input,output, data())
+        # Qlt_Qlt_server(input,output, data())
+        # Modele_server(input, output, data())
+        #print("les valeurs manquantes sont imputées")
+        
       }
     }
-    data(df)
-    
-    real_time_data(input,output,data())
-    data_exploration(input,output,data())
-    
-    # exploration_server(input,output,data())
-    # univaree_server(input,output, data())
-    # Bivaree_server(input,output, data())
-    # Qnt_Qlt_server(input,output, data())
-    # Qlt_Qlt_server(input,output, data())
-    # Modele_server(input, output, data())
-    #print("les valeurs manquantes sont imputées")
+   
   })
 }

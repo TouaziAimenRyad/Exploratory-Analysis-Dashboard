@@ -7,6 +7,8 @@ library(DT)
 library(ROSE)
 library(lattice)
 library(caret)
+library(summarytools)
+
 source('./display.R')
 source('./data_exp.R')
 source('./read.R')
@@ -30,6 +32,8 @@ source('./class_balance.R')
 # class blancing not done 
 #class balancing not working 
 # today you must finish data exp and stat tests and seperate functions into files  and tommorpw do analysis and put plots
+#add dummification it's important for corr on quantitave
+#make the app more robust especially in data exploration 
 
 
 

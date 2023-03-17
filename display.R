@@ -1,4 +1,5 @@
 
+
 real_time_data<-function(input,output,data)
 {
   output$real_time_data_tb<-  DT::renderDataTable({
@@ -8,7 +9,7 @@ real_time_data<-function(input,output,data)
       options = list(scrollY = 650,scrollX = 500,scroller = TRUE),
     )
   })
-  
+ 
   
 }
 
@@ -39,6 +40,18 @@ add_select_ui<-function(input,output,data)
   output$balance_var_list = renderUI({
     selectInput('balance_var_list', 'Select the variable to normalize',names(data))
   })
+  
+  
+  output$corr_col1 <- renderUI({
+    col_options <- names(data)[sapply(data, is.numeric)]
+    selectInput("corr_col1", "Select Column 1", col_options)
+  })
+  
+  # Create column 2 select input based on loaded dataset
+  output$corr_col2 <- renderUI({
+    col_options <- names(data)[sapply(data, is.numeric)]
+    selectInput("corr_col2", "Select Column 2", col_options)
+  })
 }
 
 
@@ -67,6 +80,7 @@ init_data_view<-function(input,output,data) # adds the Ui that we want to be dis
   real_time_data(input,output ,data)
   
   add_select_ui(input,output ,data)
+  
   #visulazing missing data to be put in the display funnction to be created later  as ui output 
   
 }

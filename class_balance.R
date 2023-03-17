@@ -15,20 +15,7 @@ class_rebalance<-function(input,output,data)
     
     
     
-    # Update the data object
-    data(df)
-    
-    # Call the other reactive functions
-    real_time_data(input, output, data())
-    data_exploration(input,output,data())
-    
-    # exploration_server(input,output,data())
-    # univaree_server(input,output, data())
-    # Bivaree_server(input,output, data())
-    # Qnt_Qlt_server(input,output, data())
-    # Qlt_Qlt_server(input,output, data())
-    # Modele_server(input, output, data())
-    # print("les valeurs manquantes sont imputées")
+   
   })
   
   
@@ -38,20 +25,20 @@ class_rebalance<-function(input,output,data)
     {
       if((input$balance_var_list!=""))
       {
+        data(df)
+        real_time_data(input,output,data())
+        data_exploration(input,output,data())
         
+        # exploration_server(input,output,data())
+        # univaree_server(input,output, data())
+        # Bivaree_server(input,output, data())
+        # Qnt_Qlt_server(input,output, data())
+        # Qlt_Qlt_server(input,output, data())
+        # Modele_server(input, output, data())
+        #print("les valeurs manquantes sont imputées")
       }
     }
-    data(df)
-    real_time_data(input,output,data())
-    data_exploration(input,output,data())
     
-    # exploration_server(input,output,data())
-    # univaree_server(input,output, data())
-    # Bivaree_server(input,output, data())
-    # Qnt_Qlt_server(input,output, data())
-    # Qlt_Qlt_server(input,output, data())
-    # Modele_server(input, output, data())
-    #print("les valeurs manquantes sont imputées")
   })
   
 }

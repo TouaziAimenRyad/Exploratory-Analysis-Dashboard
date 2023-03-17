@@ -1,4 +1,41 @@
 
+detailed_summary<-function(input,output,data)
+{
+  print("hhhhhhhhh")
+  output$sumarize <- renderUI({
+    print(
+      summarytools::dfSummary(data, 
+                              varnumbers   = TRUE,
+                              na.col       = TRUE,
+                              style        = "grid",
+                              plain.ascii  = TRUE,
+                              headings     = TRUE,
+                              graph.magnif = .8),
+      method = "render"
+    )
+    
+  })
+  # output$summerize2<-renderPrint({
+  #   
+  #     descr(data, stats = "common", plain.ascii = FALSE)
+  # 
+  # })
+}
+
+correlation_view<-function(input,output,data)
+{
+  print("jjjjjjjjjjjjjjjjjjjjjjjjjj   ")
+
+  
+  # Create correlation plot based on selected columns
+  observeEvent(input$corr_str,{
+    output$correlation_plot <- renderPlot({# maybe if use render ui solve problem
+      plot(data[,input$corr_col1],data[,input$corr_col2],type="p",col=1)
+    })
+  })
+  
+}
+
 quant_var_detail<-function(input,output,data)
 {
   quant_list<-names(data)[sapply(data, is.numeric)]
@@ -60,5 +97,8 @@ data_exploration<-function(input,output,data)
 {
   quant_var_detail(input,output,data)
   qual_var_detail(input,output,data)
+  detailed_summary(input,output ,data)
+  correlation_view(input,output ,data)
+  
   
 }
