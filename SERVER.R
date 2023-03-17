@@ -10,7 +10,7 @@ library(ROSE)
 library(lattice)
 library(caret)
 library(naniar)
-
+library(fastDummies)
 source('./display.R')
 source('./data_exp.R')
 source('./read.R')
@@ -18,6 +18,7 @@ source('./missing_val.R')
 source('./outliers.R')
 source('./normalisation.R')
 source('./class_balance.R')
+source('./dummification.R')
 
 
 # add a function similar to init data view to keep a display at hand of your data
@@ -41,6 +42,9 @@ source('./class_balance.R')
 # coorelation and data exploration  shouldnt' be done right  after the upload
 #add a reset btn to all data prepartion
 #change the method of habdeling outliers
+#plot output not that goo especialy in normalisation
+#action button don't reset it's problem
+#condition you must handle missing values first before skipping to outliers and other stuff
 
 shinyServer(
   function(input,output)
@@ -65,5 +69,8 @@ shinyServer(
     normalisation(input,output,data)
     ##############################################################################"
     class_rebalance(input,output,data)
+    dummification(input,output,data)
+    rename_var(input,output,data)
+    
   }
 )

@@ -71,7 +71,8 @@ shinyUI(
                                  uiOutput("norm_var_list"),
                                  fluidRow(actionButton("norm_z_scr","Click here to normalize using z_socre  ")),
                                  fluidRow(actionButton("norm_min_max","Click here to normalize using Min-Max")),
-                                 uiOutput("norm_plot")
+                                 plotOutput("norm_plot")
+
                                  
                         ),
                         tabPanel("Class Rebalance",
@@ -80,6 +81,12 @@ shinyUI(
                                  fluidRow(actionButton("balance_over_samp","Click here to rebalance using over sampling  ")),
                                  fluidRow(actionButton("balance_under_samp","Click here to rebalance using under sampling")),
                                  uiOutput("balance_plot")
+                        ),
+                        tabPanel("Dummification",
+                                 uiOutput("dummi_var_list"),
+                                 fluidRow(actionButton("dummi_str","Click here to apply dummification on chosen Variable"))
+                                 
+                                 
                         )
                       ),
                       
@@ -112,7 +119,11 @@ shinyUI(
                                        uiOutput("corr_matrix_ui")
                                        #fluidRow(box("heatmap"))
                               ),
-                              tabPanel("Rename Columns")
+                              tabPanel("Rename Columns",
+                                       uiOutput("rename_var"),
+                                       uiOutput("rename_new_var"),
+                                       actionButton("rename","Rename")
+                                       )
                             )
                     ),
                     tabItem(tabName = "real_time",

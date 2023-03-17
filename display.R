@@ -76,6 +76,23 @@ add_select_ui<-function(input,output,data)
     col_options <- names(data)[sapply(data, is.numeric)]
     selectInput("corr_col2", "Select Column 2", col_options)
   })
+  
+  #select var to rename
+  output$rename_var<-renderUI({
+    selectInput('rename_var', 'Select the variable to Rename',names(data))
+    
+  })
+  output$rename_new_var<-renderUI({
+    textInput('rename_new_var', 'Type in the new name')
+    
+  })
+  
+  #slect var ti dummification
+  output$dummi_var_list = renderUI({
+    selectInput('dummi_var_list', 'Select the variable to apply the Dummification on',names(data[grepl('factor|logical|character',sapply(data,class))]))
+  })
+  
+  
 }
 
 

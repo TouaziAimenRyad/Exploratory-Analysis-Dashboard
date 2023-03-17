@@ -1,7 +1,20 @@
+dispaly_norm<-function(input,output,df,df2)
+{
+
+  output$norm_plot<-renderPlot({
+  
+    par(mfrow = c(1, 2))  # Set up side-by-side plots
+    hist(df2[,input$norm_var_list], main = "Unnormalized", xlab = input$norm_var_list)
+    hist(df[,input$norm_var_list], main = "Normalized", xlab = input$norm_var_list)
+  })
+  
+}
+
 normalisation<-function(input,output,data)
 {
   observeEvent(input$norm_z_scr,{
     df=data()
+    df2=df
     if(!is.null(input$norm_var_list))
     {
       if(input$norm_var_list!="")
@@ -10,7 +23,7 @@ normalisation<-function(input,output,data)
         
         # Add the normalized column to the original data frame
         df[, input$norm_var_list] <- norm_col
-        
+        dispaly_norm(input,output,df,df2)
         # Plot the distribution of the normalized column
         # output$plot <- renderPlot({
         #   ggplot(data = mydata, aes(x = mydata_z)) +
@@ -38,7 +51,8 @@ normalisation<-function(input,output,data)
   
   
   observeEvent(input$norm_min_max,{
-    df=data()
+    df<-data()
+    df2<-df
     if(!is.null(input$norm_var_list))
     {
       if(input$norm_var_list!="")
@@ -52,29 +66,23 @@ normalisation<-function(input,output,data)
         
         # Add the normalized column to the original data frame
         df[,input$norm_var_list ] <- norm_col
+        dispaly_norm(input,output,df,df2)
         
-        # Plot the distribution of the normalized column
-        # output$plot <- renderPlot({
-        #   ggplot(data = mydata, aes(x = mydata_norm)) +
-        #     geom_histogram(binwidth = 0.05, fill = "steelblue") +
-        #     xlab("Normalized Value") +
-        #     ylab("Frequency") +
-        #     ggtitle("Distribution of Normalized Column")
-        # })
+        data(df)
+        real_time_data(input,output,data())
+        data_exploration(input,output,data())
+        
+        # exploration_server(input,output,data())
+        # univaree_server(input,output, data())
+        # Bivaree_server(input,output, data())
+        # Qnt_Qlt_server(input,output, data())
+        # Qlt_Qlt_server(input,output, data())
+        # Modele_server(input, output, data())
+        #print("les valeurs manquantes sont imputées")
         
         
       }
     }
-    data(df)
-    real_time_data(input,output,data())
-    data_exploration(input,output,data())
-    
-    # exploration_server(input,output,data())
-    # univaree_server(input,output, data())
-    # Bivaree_server(input,output, data())
-    # Qnt_Qlt_server(input,output, data())
-    # Qlt_Qlt_server(input,output, data())
-    # Modele_server(input, output, data())
-    #print("les valeurs manquantes sont imputées")
+   
   })
 }

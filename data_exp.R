@@ -51,6 +51,7 @@
   
 #}
 
+
 quant_var_detail<-function(input,output,data)
 {
   quant_list<-names(data)[sapply(data, is.numeric)]
@@ -117,4 +118,31 @@ data_exploration<-function(input,output,data)
   print("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj")
   # 
   
+}
+
+
+
+rename_var<-function(input,output,data)
+{
+  observeEvent(input$rename,{
+    df<-data()
+    if((!is.null(input$rename_var))&(!is.null(input$rename_new_var)))
+    {
+      if((input$rename_var!="")&(input$rename_new_var)!="")
+      {
+        colnames(df)[colnames(df) == input$rename_var] <- input$rename_new_var
+        data(df)
+        real_time_data(input,output,data())
+        data_exploration(input,output,data())
+        add_select_ui(input,output,data())
+        # exploration_server(input,output,data())
+        # univaree_server(input,output, data())
+        # Bivaree_server(input,output, data())
+        # Qnt_Qlt_server(input,output, data())
+        # Qlt_Qlt_server(input,output, data())
+        # Modele_server(input, output, data())
+        #print("les valeurs manquantes sont imputées")
+      }
+    }
+  })
 }
