@@ -1,15 +1,39 @@
-
-
-real_time_data<-function(input,output,data)
+display_missing_in_cols<-function(input,output,data)
 {
-  output$real_time_data_tb<-  DT::renderDataTable({
+ 
+   output$display_missing<- renderPlot({
+      #gg_miss_var(data) + labs(y = "Look at all the missing ones") find a place where to put this
+       gg_miss_which(data)
+     
+   })
+  
+
+}
+
+display_outliers_in_cols<-function(input,output,data)
+{
+  quant_cols <- sapply(data, is.numeric)
+  quant_data <- data[, quant_cols]
+  output$display_out<- renderPlot({
+    boxplot(quant_data)
+    stripchart(quant_data,col = 1:length(quant_cols), vertical = TRUE, add = TRUE, pch = 19)
+      
+      
+  })
     
-    df<-DT::datatable(
-      data,
-      options = list(scrollY = 650,scrollX = 500,scroller = TRUE),
+}
+
+real_time_data<-function(input,output,data){
+        
+      output$real_time_data_tb<-  DT::renderDataTable({
+      
+      df<-DT::datatable(
+        data,
+        options = list(scrollY = 650,scrollX = 500,scroller = TRUE),
     )
   })
- 
+  display_missing_in_cols(input,output,data)
+  display_outliers_in_cols(input,output,data)
   
 }
 

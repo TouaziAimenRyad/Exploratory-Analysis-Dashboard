@@ -1,8 +1,18 @@
-
+display_out_col<-function(input,output,df,df2)
+{
+  df3<-list(before=df2[,input$out_var_list],after=df[,input$out_var_list])
+  output$out_plot<- renderPlot({
+    boxplot(df3)
+    stripchart(df3,col =c("yellow","green"), vertical = TRUE, add = TRUE, pch = 19)
+    
+    
+  })
+}
 handle_outliers<-function(input,output,data)
 {
   observeEvent(input$out_rv,{
-    df=data()
+    df<-data()
+    df2<-df
     if(!is.null(input$out_var_list))
     {
       if(input$out_var_list!="")
@@ -14,6 +24,7 @@ handle_outliers<-function(input,output,data)
         lower_bound <- q1 - input$out_thr * iqr / 100
         upper_bound <- q3 + input$out_thr * iqr / 100
         df<-df %>% filter(col >= lower_bound & col <= upper_bound)
+        display_out_col(input,output ,df,df2)
         #df_outliers(df2_outliers)
         #nb_outliers<-nrow(df)-nrow(df2)
         #print(nb_outliers)

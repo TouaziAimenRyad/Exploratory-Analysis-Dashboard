@@ -1,3 +1,28 @@
+display_handle_missing_quant_plot<-function(input,output,df,df2)
+{
+  output$quant_rv_plt<- renderPlot({
+    plot(df[,input$quant_var_list], type='l', pch=16, col='red', xlab=input$quant_var_list, ylab='')
+    lines(df2[,input$quant_var_list],col="green")
+    legend(x = "topleft",          # Position
+           legend = c(paste("avec imputation par la moyenne de la variable ",input$quant_var_list,""), "avec valeurs manquantes"),  # Legend texts
+           lty = c(1, 2),           # Line types
+           col = c(2, 3),           # Line colors
+           lwd = 2) 
+    
+    
+    
+  } )
+}
+
+display_handle_missing_qual_plot<-function(input,output,df,df2)
+{
+  output$qual_rv_plt<- renderPlot({
+    ggplot(df, aes(x = df2[,input$qual_var_list],fill = df[,input$qual_var_list])) + geom_bar(position = "dodge")
+    
+    
+    
+  } )
+}
 
 handeling_missing_values_quant<-function(input,output,data) # add a condition so it happens only when we have select col
 {
@@ -15,6 +40,8 @@ handeling_missing_values_quant<-function(input,output,data) # add a condition so
         if((sum(is.na(data()[,input$quant_var_list]))!=0)){
           
           df[is.na(df[,input$quant_var_list]), input$quant_var_list]<-mean(data()[,input$quant_var_list], na.rm = TRUE)
+          
+          display_handle_missing_quant_plot(input,output,df,df2)
           
           
         }
@@ -51,6 +78,7 @@ handeling_missing_values_quant<-function(input,output,data) # add a condition so
           
           df[is.na(df[,input$quant_var_list]), input$quant_var_list]<-median(data()[,input$quant_var_list], na.rm = TRUE)
           
+          display_handle_missing_quant_plot(input,output,df,df2)
           
         }
         
@@ -73,7 +101,6 @@ handeling_missing_values_quant<-function(input,output,data) # add a condition so
     
   })
   
-  
   #handeling using the knn interpolation
   observeEvent(input$quant_rv_intrp,{
     df=data()
@@ -85,6 +112,8 @@ handeling_missing_values_quant<-function(input,output,data) # add a condition so
         if((sum(is.na(data()[,input$quant_var_list]))!=0)){
           
           df[,input$quant_var_list]<-na.spline(df[,input$quant_var_list]) # change the method
+          
+          display_handle_missing_quant_plot(input,output,df,df2)
           
           
           
@@ -168,6 +197,8 @@ handeling_missing_values_qual<-function(input,output,data) #both NA and empty st
           df[,input$qual_var_list][is.na(df[,input$qual_var_list])]<-mode_val
           df[,input$qual_var_list][df[,input$qual_var_list] == ""] <- mode_val
           data(df)
+          display_handle_missing_qual_plot(input,output,df,df2)
+          
           
         }
         
