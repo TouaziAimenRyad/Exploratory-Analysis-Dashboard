@@ -6,11 +6,15 @@ read_dataSet<-function(input,output,initial_data,data)
   ext <- tools::file_ext(infile$datapath)
   if(ext=="xls"){
     d=read_xls(infile$datapath,header=input$header_present, sep =input$sep)
+    d[d == ""] <- NA
+    print(d)
     data(d)
     initial_data(d)
     
   }else{
     d=read.csv(infile$datapath, header=input$header_present, sep =input$sep)
+    d[d == ""] <- NA
+    print(d)
     data(d)
     initial_data(d)
     

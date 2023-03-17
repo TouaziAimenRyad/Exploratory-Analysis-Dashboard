@@ -1,6 +1,7 @@
 library(shiny)
 library(magrittr)
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(ggcorrplot)
 library(zoo)

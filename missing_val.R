@@ -189,7 +189,7 @@ handeling_missing_values_qual<-function(input,output,data) #both NA and empty st
     {
       if((input$qual_var_list!=""))
       {
-        if(sum(as.character(data()[,input$qual_var_list])=="")>0){
+        if(sum(as.character(data()[,input$qual_var_list])==""|is.na(data()[,input$qual_var_list]))>0){
           non_missing_vals <- df[,input$qual_var_list][df[,input$qual_var_list] != ""& !is.na(df[,input$qual_var_list])]
           mode_val <- ifelse(length(non_missing_vals) > 0, names(which.max(table(non_missing_vals))), NA)
           
