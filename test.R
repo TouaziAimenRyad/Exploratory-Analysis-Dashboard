@@ -1,3 +1,4 @@
+
 run_test<-function(input,output,data)
 {
   
@@ -10,6 +11,10 @@ run_test<-function(input,output,data)
         {
           selected_variable_column<-data[,input$var_test_ad]
           output$result_ad<-renderPrint({ad.test(selected_variable_column)})
+          output$plot_test_ad<-renderPlot({
+            qqnorm(selected_variable_column, pch = 1, frame = FALSE)
+            qqline(selected_variable_column, col = "blue", lwd = 2)
+          })
           
         }
       }
@@ -25,6 +30,10 @@ run_test<-function(input,output,data)
         {
           selected_variable_column<-data[,input$var_test_shapiro]
           output$result_shapiro<-renderPrint({shapiro.test(selected_variable_column)})
+          output$plot_test_shapiro<-renderPlot({
+            qqnorm(selected_variable_column, pch = 1, frame = FALSE)
+            qqline(selected_variable_column, col = "blue", lwd = 2)
+          })
           
         }
       }
@@ -40,6 +49,10 @@ run_test<-function(input,output,data)
         {
           selected_variable_column<-data[,input$var_test_mv]
           output$result_mv<-renderPrint({mvShapiro.Test(selected_variable_column)})
+          output$plot_test_mv<-renderPlot({
+            qqnorm(selected_variable_column, pch = 1, frame = FALSE)
+            qqline(selected_variable_column, col = "blue", lwd = 2)
+          })
           
         }
       }
@@ -55,7 +68,18 @@ run_test<-function(input,output,data)
         {
           selected_variable_column_1<-data[,input$var_test_ks_1]
           selected_variable_column_2<-data[,input$var_test_ks_2]
-          output$result_ks<-renderPrint({ks.test(selected_variable_column_1,selected_variable_column_2)})
+          test<-ks.test(selected_variable_column_1,selected_variable_column_2,alternative="l")
+          
+          output$result_ks<-renderPrint({test})
+          output$plot_test_ks<-renderPlot({
+            plot(ecdf(selected_variable_column_1),
+                 xlim = range(c(selected_variable_column_1, selected_variable_column_2)),
+                 col = "blue")
+            plot(ecdf(selected_variable_column_2),
+                 add = TRUE,
+                 lty = "dashed",
+                 col = "red")
+          })
           
         }
       }
@@ -89,7 +113,7 @@ run_test<-function(input,output,data)
         {
           selected_variable_column_1<-data[,input$var_test_karl_1]
           selected_variable_column_2<-data[,input$var_test_karl_2]
-          output$result_karl<-renderPrint({cor(selected_variable_column_1,selected_variable_column_2,method = "pearson")})
+          output$result_karl<-renderPrint({cor.test(selected_variable_column_1,selected_variable_column_2,method = "pearson")})
           
         }
       }
@@ -105,7 +129,7 @@ run_test<-function(input,output,data)
         {
           selected_variable_column_1<-data[,input$var_test_spear_1]
           selected_variable_column_2<-data[,input$var_test_spear_2]
-          output$result_spear<-renderPrint({cor(selected_variable_column_1,selected_variable_column_2,method = "spearman")})
+          output$result_spear<-renderPrint({cor.test(selected_variable_column_1,selected_variable_column_2,method = "spearman")})
           
         }
       }
@@ -121,7 +145,7 @@ run_test<-function(input,output,data)
         {
           selected_variable_column_1<-data[,input$var_test_kend_1]
           selected_variable_column_2<-data[,input$var_test_kend_2]
-          output$result_kend<-renderPrint({cor(selected_variable_column_1,selected_variable_column_2,method = "kendall")})
+          output$result_kend<-renderPrint({cor.test(selected_variable_column_1,selected_variable_column_2,method = "kendall")})
           
         }
       }

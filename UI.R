@@ -166,7 +166,7 @@ shinyUI(
                                                   uiOutput("var_test_cov_2"),
                                                   actionButton("run_cov","RUN TEST"),
                                                   verbatimTextOutput("result_cov"),
-                                                  plotOutput("plot_test_cov")
+                                                  #plotOutput("plot_test_cov")
                                                   ),
                                          tabPanel("KARL PEARSON TEST",
                                                   uiOutput("var_test_karl_1"),
