@@ -28,6 +28,7 @@ class_rebalance<-function(input,output,data)
         data(df)
         real_time_data(input,output,data())
         data_exploration(input,output,data())
+        run_test(input,output,data())
         
         # exploration_server(input,output,data())
         # univaree_server(input,output, data())

@@ -9,6 +9,7 @@ shinyUI(
                     menuItem("Initialise Data", tabName = "Init_data_tab", icon=icon("check")),
                     menuItem("Data Preparation", tabName = "data_prep", icon=icon("check")),
                     menuItem("Data Exploration", tabName = "data_exp", icon=icon("check")),
+                    menuItem("Statistical Tests", tabName = "stat_test", icon=icon("check")),
                     menuItem("Real Time Data", tabName = "real_time", icon=icon("check"))
                   )
                   
@@ -98,15 +99,15 @@ shinyUI(
                                        tableOutput("quant_detail")),
                               tabPanel("Qualitative Variables",
                                        tableOutput("qual_detail")),
-                              tabPanel("Detailed Summary",
-                                       htmlOutput("sumarize"),
-                                       #verbatimTextOutput("summerize2")
-                              ),
+                              # tabPanel("Detailed Summary",
+                              #          htmlOutput("sumarize"),
+                              #          #verbatimTextOutput("summerize2")
+                              # ),
                               tabPanel("Data Correlation",
                                        sidebarLayout(
                                          
                                          sidebarPanel(
-                                           
+                                           plotOutput("corr_matrix"),
                                            uiOutput("corr_col1"),
                                            uiOutput("corr_col2"),
                                            actionButton("corr_str","GO!")
@@ -126,6 +127,84 @@ shinyUI(
                                        )
                             )
                     ),
+                    tabItem(tabName = 'stat_test',
+                            tabsetPanel(
+                              type='tab',
+                              tabPanel("Statistics",
+                                       tabBox(
+                                         tabPanel("A-D TEST",
+                                                  uiOutput("var_test_ad"),
+                                                  actionButton("run_ad","RUN TEST"),
+                                                  verbatimTextOutput("result_ad"),
+                                                  plotOutput("plot_test_ad")
+                                                  ),
+                                         tabPanel("SHAPIRO TEST",
+                                                  uiOutput("var_test_shapiro"),
+                                                  actionButton("run_shapiro","RUN TEST"),
+                                                  verbatimTextOutput("result_shapiro"),
+                                                  plotOutput("plot_test_shapiro")
+                                                  ),
+                                         tabPanel("K-S TEST",
+                                                  uiOutput("var_test_ks_1"),
+                                                  uiOutput("var_test_ks_2"),
+                                                  actionButton("run_ks","RUN TEST"),
+                                                  verbatimTextOutput("result_ks"),
+                                                  plotOutput("plot_test_ks")
+                                                  ),
+                                         tabPanel("MV SHAPIRO TEST",
+                                                  uiOutput("var_test_mv"),
+                                                  actionButton("run_mv","RUN TEST"),
+                                                  verbatimTextOutput("result_mv"),
+                                                  plotOutput("plot_test_mv")
+                                                  )
+                                       )
+                                  ),
+                              tabPanel("Covariance & Correlation",
+                                       tabBox(
+                                         tabPanel("COVARIANCE TEST",
+                                                  uiOutput("var_test_cov_1"),
+                                                  uiOutput("var_test_cov_2"),
+                                                  actionButton("run_cov","RUN TEST"),
+                                                  verbatimTextOutput("result_cov"),
+                                                  plotOutput("plot_test_cov")
+                                                  ),
+                                         tabPanel("KARL PEARSON TEST",
+                                                  uiOutput("var_test_karl_1"),
+                                                  uiOutput("var_test_karl_2"),
+                                                  actionButton("run_karl","RUN TEST"),
+                                                  verbatimTextOutput("result_karl"),
+                                                  plotOutput("plot_test_karl")
+                                                  ),
+                                         tabPanel("SPEARMAN TEST",
+                                                  uiOutput("var_test_spear_1"),
+                                                  uiOutput("var_test_spear_2"),
+                                                  actionButton("run_spear","RUN TEST"),
+                                                  verbatimTextOutput("result_spear"),
+                                                  plotOutput("plot_test_spear")),
+                                         tabPanel("KENDALL TEST",
+                                                  uiOutput("var_test_kend_1"),
+                                                  uiOutput("var_test_kend_2"),
+                                                  actionButton("run_kend","RUN TEST"),
+                                                  verbatimTextOutput("result_kend"),
+                                                  plotOutput("plot_test_kend")
+                                                  )
+                                       )
+                                    )
+                            )
+                            # sidebarLayout(
+                            #   sidebarPanel(
+                            #     uiOutput("var_test_1"),
+                            #     uiOutput("var_test_2"),
+                            #     uiOutput("type_test"),
+                            #    
+                            #     actionButton("submit_test", "Submit")
+                            #   ),
+                            #   mainPanel(
+                            #     plotOutput("plot_test"),
+                            #     verbatimTextOutput("result_test")
+                            #   )
+                            # )
+                          ),
                     tabItem(tabName = "real_time",
                             box(id="real_t_d",div(DT::dataTableOutput("real_time_data_tb")))
                     )

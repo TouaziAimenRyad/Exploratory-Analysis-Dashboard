@@ -27,7 +27,7 @@ reader<-function(input,output,initial_data,data)
     
     read_dataSet(input,output,initial_data,data)
     
-    #data_exploration(input,output,data())
+    data_exploration(input,output,data())
     # univaree_server(input,output, data())
     # Bivaree_server(input,output, data())
     # Qnt_Qlt_server(input,output, data())
@@ -40,7 +40,8 @@ reader<-function(input,output,initial_data,data)
   observeEvent(input$sep,{
     
     read_dataSet(input,output,initial_data,data)
-    #data_exploration(input,output,data())
+    data_exploration(input,output,data())
+    run_test(input,output,data())
     
     # exploration_server(input,output,data())
     # univaree_server(input,output, data())

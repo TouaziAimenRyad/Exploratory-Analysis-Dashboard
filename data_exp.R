@@ -1,55 +1,52 @@
-# 
-# detailed_summary<-function(input,output,data)
-# {
-#   if(!is.null(data))
-#   {
-#     output$sumarize <- renderUI({
-#       print(
-#         summarytools::dfSummary(data, 
-#                                 varnumbers   = TRUE,
-#                                 na.col       = TRUE,
-#                                 style        = "grid",
-#                                 plain.ascii  = TRUE,
-#                                 headings     = TRUE,
-#                                 graph.magnif = .8),
-#         method = "render"
-#       )
-#       
-#     })
-#     # output$summerize2<-renderPrint({
-#     #   
-#     #     descr(data, stats = "common", plain.ascii = FALSE)
-#     # 
-#     # })
-#   }
-#   
-# }
-# 
-# correlation_view<-function(input,output,data)
-# {
-#   if(!is.null(data))
-#   {
-#     corr <- round(cor(data), 1)
-#     print(corr)
-#     output$corr_matrix_ui<-renderUI({plotOutput("matrix_ui")})
-#     output$matrix_ui<-renderPlot({ggcorrplot(corr)})
-#     # Create correlation plot based on selected columns
-#     observeEvent(input$corr_str,{
-#       output$corr_plot_ui<-renderUI({plotOutput("correlation_plot")})
-#       output$correlation_plot <- renderPlot({# maybe if use render ui solve problem
-#         plot(data[,input$corr_col1],data[,input$corr_col2],type="p",col=1)
-#       })
-#       
-#     })
+# # 
+#  detailed_summary<-function(input,output,data)
+#  {
+#    if(!is.null(data))
+#    {
 #     
-#   }
-#   
-#   
-#   
-#   
+#        
+#      # output$summerize2<-renderPrint({
+#      #   
+#      #     descr(data, stats = "common", plain.ascii = FALSE)
+#      # 
+#      # })
+#    }
+#    
+#  }
+# 
+ correlation_view<-function(input,output,data)
+ {
+   if((!is.null(data))&(length(names(data)[sapply(data, is.numeric)])>0))
+   {
+     quant_cols <- data.frame(data[, sapply(data, is.numeric)])
+     colnames(quant_cols) <- colnames(data)[sapply(data, is.numeric)]
+     
+     if(!is.null(quant_cols))
+     {
+       corr_mat<-round(cor(quant_cols),2)
+       melted_data<-melt( corr_mat)
+       print(melted_data)
+       output$corr_matrix<-renderPlot({ggplot(data = melted_data, aes(x=Var1, y=Var2, fill=value)) + 
+           geom_tile()})
+     }
+     
+      #Create correlation plot based on selected columns
+      observeEvent(input$corr_str,{
+        output$correlation_plot <- renderPlot({# maybe if use render ui solve problem
+          plot(data[,input$corr_col1], data[,input$corr_col2], pch = 19, col = "blue",main=(paste("Correlation:", round(cor(data[,input$corr_col1], data[,input$corr_col2]), 2))),xlab="VAR1",ylab="VAR2")
+          
+          # Regression line
+          abline(lm(data[,input$corr_col1] ~ data[,input$corr_col2]), col = "red", lwd = 3)
+          
+         
+        })
+      })  
+      
+     
+   }
+
   
-  
-#}
+}
 
 
 quant_var_detail<-function(input,output,data)
@@ -114,7 +111,7 @@ data_exploration<-function(input,output,data)
   quant_var_detail(input,output,data)
   qual_var_detail(input,output,data)
   # detailed_summary(input,output ,data)
-  # correlation_view(input,output ,data)
+  correlation_view(input,output ,data)
   print("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj")
   # 
   

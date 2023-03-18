@@ -25,16 +25,12 @@ handle_outliers<-function(input,output,data)
         upper_bound <- q3 + input$out_thr * iqr / 100
         df<-df %>% filter(col >= lower_bound & col <= upper_bound)
         display_out_col(input,output ,df,df2)
-        #df_outliers(df2_outliers)
-        #nb_outliers<-nrow(df)-nrow(df2)
-        #print(nb_outliers)
-        #output$out_plot<- ggplot(aes(x = my_col)) +
-        #   geom_density() +
-        #   ggtitle("Distribution of column values after removing outliers")
+        
         data(df)
         
         real_time_data(input,output,data())
         data_exploration(input,output,data())
+        run_test(input,output,data())
         
         # exploration_server(input,output,data())
         # univaree_server(input,output, data())

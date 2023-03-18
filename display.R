@@ -12,14 +12,18 @@ display_missing_in_cols<-function(input,output,data)
 
 display_outliers_in_cols<-function(input,output,data)
 {
-  quant_cols <- sapply(data, is.numeric)
-  quant_data <- data[, quant_cols]
-  output$display_out<- renderPlot({
-    boxplot(quant_data)
-    stripchart(quant_data,col = 1:length(quant_cols), vertical = TRUE, add = TRUE, pch = 19)
+  if((!is.null(data))&(length(names(data)[sapply(data, is.numeric)])>0))
+  {
+    quant_cols <- sapply(data, is.numeric)
+    quant_data <- data[, quant_cols]
+    output$display_out<- renderPlot({
+      boxplot(quant_data)
+      stripchart(quant_data,col = 1:length(quant_cols), vertical = TRUE, add = TRUE, pch = 19)
       
       
-  })
+    })
+  }
+  
     
 }
 
@@ -92,6 +96,24 @@ add_select_ui<-function(input,output,data)
     selectInput('dummi_var_list', 'Select the variable to apply the Dummification on',names(data[grepl('factor|logical|character',sapply(data,class))]))
   })
   
+  #select var for statstcical test
+  output$var_test_ad<-renderUI({  selectInput(inputId = "var_test_ad", label = "Choose the Variable for AD test", names(data)[sapply(data, is.numeric)])})
+  output$var_test_shapiro<-renderUI({  selectInput(inputId = "var_test_shapiro", label = "Choose the Variable for SHAPIRO test", names(data)[sapply(data, is.numeric)])})
+  output$var_test_ks_1<-renderUI({  selectInput(inputId = "var_test_ks_1", label = "Choose the first Variable for KS test", names(data)[sapply(data, is.numeric)])})
+  output$var_test_ks_2<-renderUI({  selectInput(inputId = "var_test_ks_2", label = "Choose the second Variable for KS test", names(data)[sapply(data, is.numeric)])})
+  output$var_test_mv<-renderUI({  selectInput(inputId = "var_test_mv", label = "Choose the Variable for MV SHAPIRO test", names(data)[sapply(data, is.numeric)])})
+  
+  output$var_test_cov_1<-renderUI({  selectInput(inputId = "var_test_cov_1", label = "Choose the first Variable for COVARIANCE test", names(data)[sapply(data, is.numeric)])})
+  output$var_test_cov_2<-renderUI({  selectInput(inputId = "var_test_cov_2", label = "Choose the second Variable for COVARIANCE test", names(data)[sapply(data, is.numeric)])})  
+  
+  output$var_test_karl_1<-renderUI({  selectInput(inputId = "var_test_karl_1", label = "Choose the first Variable for KARL PEARSON test", names(data)[sapply(data, is.numeric)])})
+  output$var_test_karl_2<-renderUI({  selectInput(inputId = "var_test_karl_2", label = "Choose the second Variable for KARL PEARSON test", names(data)[sapply(data, is.numeric)])})
+  
+  output$var_test_spear_1<-renderUI({  selectInput(inputId = "var_test_spear_1", label = "Choose the first Variable for SPEARMAN test", names(data)[sapply(data, is.numeric)])})
+  output$var_test_spear_2<-renderUI({  selectInput(inputId = "var_test_spear_2", label = "Choose the second Variable for SPEARMAN test", names(data)[sapply(data, is.numeric)])})
+  
+  output$var_test_kend_1<-renderUI({  selectInput(inputId = "var_test_kend_1", label = "Choose the first Variable for KENDALL test", names(data)[sapply(data, is.numeric)])})
+  output$var_test_kend_2<-renderUI({  selectInput(inputId = "var_test_kend_2", label = "Choose the second Variable for KENDALL test", names(data)[sapply(data, is.numeric)])})
   
 }
 

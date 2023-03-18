@@ -2,8 +2,8 @@ library(shiny)
 library(magrittr)
 library(dplyr)
 library(tidyr)
+library(reshape2)
 library(ggplot2)
-library(ggcorrplot)
 library(zoo)
 library(DT)
 library(ROSE)
@@ -11,14 +11,20 @@ library(lattice)
 library(caret)
 library(naniar)
 library(fastDummies)
+library(stats)
+library(mvShapiroTest)
+library(nortest)
+library(mvnormtest)
 source('./display.R')
 source('./data_exp.R')
+source('./test.R')
 source('./read.R')
 source('./missing_val.R')
 source('./outliers.R')
 source('./normalisation.R')
 source('./class_balance.R')
 source('./dummification.R')
+
 
 
 # add a function similar to init data view to keep a display at hand of your data
@@ -45,7 +51,7 @@ source('./dummification.R')
 #plot output not that goo especialy in normalisation
 #action button don't reset it's problem
 #condition you must handle missing values first before skipping to outliers and other stuff
-
+#your using if not null data do plots and stuff you need to add an else
 shinyServer(
   function(input,output)
   {
