@@ -10,7 +10,8 @@ shinyUI(
                     menuItem("Data Preparation", tabName = "data_prep", icon=icon("check")),
                     menuItem("Data Exploration", tabName = "data_exp", icon=icon("check")),
                     menuItem("Statistical Tests", tabName = "stat_test", icon=icon("check")),
-                    menuItem("Univariate Analysis", tabName = "univar", icon=icon("check")),
+                    menuItem("Univariate Analysis", tabName = "univar", icon=icon("check"),
+                             menuSubItem("Quantitative",tabName = "univar_quant"),menuSubItem("Qualitative",tabName = "univar_qual")),
                     
                     menuItem("Real Time Data", tabName = "real_time", icon=icon("check"))
                   )
@@ -195,18 +196,16 @@ shinyUI(
                             )
                             
                           ),
-                    tabItem(tabName = "univar",
-                            tabsetPanel(
-                              type="tab",
-                              tabPanel("Quantitative",
+
+                              tabItem(tabName = "univar_quant",
                                        uiOutput("univar_quant_var"),
                                        uiOutput("univar_quant_graph")
                                        ),
-                              tabPanel("Qualitative",
+                              tabItem(tabName = "univar_qual",
                                        uiOutput("univar_qual_var"),
                                        uiOutput("univar_qual_graph")
                                        )
-                            )),
+                            ,
                     tabItem(tabName = "real_time",
                             box(id="real_t_d",div(DT::dataTableOutput("real_time_data_tb")))
                     )

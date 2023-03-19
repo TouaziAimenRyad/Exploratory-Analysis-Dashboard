@@ -21,7 +21,11 @@ univariate_ana<-function(input,output,data)
         title = "Size Histogram", status = "info", solidHeader = TRUE,
         collapsible = TRUE,
         plotOutput(outputId = "size_hist")
-      )
+      ),
+      box(
+        title = "Measures of Central Tendency and Dispersion", status = "info", solidHeader = TRUE,
+        collapsible = TRUE,
+        tableOutput(outputId = "centreDisp"))
       
     ),
     
@@ -37,9 +41,8 @@ univariate_ana<-function(input,output,data)
   })
   
   observeEvent(input$tabs,{
-    if(input$tabs=="univar")
+    if(input$tabs=="univar_quant")
     {
-      print("jk,,kd,kd,kd,k,d,")
       if(!is.null(data))
       {
        
@@ -68,20 +71,20 @@ univariate_ana<-function(input,output,data)
               })
               
       
-               # # Noms des caractéristiques
-               # names.tmp <- c("Maximum", "Minimum", "Moyenne", "Médiane",
-               #                "1e quartile", "3e quartile", "Variance", "Ecart-type")
-               # # Calcul des caractéristiques
-               # summary.tmp <- c(max(data()[,1]), min(data()[,1]), mean(data()[,1]), median(data()[,1]),
-               #                  quantile((data()[,1]))[2], quantile((data()[,1]))[4],
-               #                  var(data()[,1]), sqrt(var(data()[,1])))
-               # # Ajout des nomes au vecteur de valeurs
-               # summary.tmp <- cbind.data.frame(names.tmp, summary.tmp)
-               # # Ajout des noms de colonnes
-               # colnames(summary.tmp) <- c("Caractéristique", "Valeur")
-               # 
-               # summary.tmp
-               # 
+              tabCentreDisp <- reactive({
+                dt =data[,input$univar_quant_var]
+                names.tmp <- c("Maximum", "Minimum", "Mean", "Median",
+                               "1st quartile", "3rd quartile", "Variance", "Standard-Deviation")
+
+                summary.tmp <- c(max(dt), min(dt), mean(dt), median(dt),
+                                 quantile((dt))[2], quantile((dt))[4],
+                                 var(dt), sqrt(var(dt)))
+                summary.tmp <- cbind.data.frame(names.tmp, summary.tmp)
+                colnames(summary.tmp) <- c("Measure", "Value")
+                
+                summary.tmp
+              })
+              output$centreDisp <- renderTable({tabCentreDisp()})
                      
              
               
@@ -111,33 +114,89 @@ univariate_ana<-function(input,output,data)
     }
   })
   
+  #######################################################################################
   
+  output$univar_qual_graph<-renderUI({
+    fluidRow(
+      column(
+        width = 12,
+        box(
+          width = 12,
+          title = "Stats Table", status = "primary", solidHeader = TRUE,
+          collapsible = TRUE,
+          tableOutput("stat_tbl")
+        )
+        
+        
+      ),
+      column(
+        width = 12,
+        
+        box(
+          width = 6,
+          title = "Pie Chart", status = "primary", solidHeader = TRUE,
+          collapsible = TRUE,
+          plotOutput("pie_chart")
+        )
+        
+        
+        
+      ),
+      column(
+        width = 12,
+        box(
+          width = 12,
+          title = "Bar Chart", status = "primary", solidHeader = TRUE,
+          collapsible = TRUE,
+          plotOutput("bar_chart")
+        )
+      )
+    )
+    
+  })
+  
+  observeEvent(input$tabs,{
+    if(input$tabs=="univar_qual")
+    {
+      if((!is.null(data)))
+      {
+        
+        if((length(names(data[grepl('factor|logical|character',sapply(data,class))]))>0))
+        {
+          output$pie_chart <- renderPlot({
+            pie(table(data[,input$univar_qual_var]), labels = substr(names(table(data[,input$univar_qual_var])), 1, 7), 
+                main = " Pie Chart ", col=rainbow(length(names(table(data[,input$univar_qual_var])))))
+          })
+          
+          output$bar_chart <- renderPlot({
+            barplot(table(data[,input$univar_qual_var]), main = "Bar Chart ", 
+                    xlab=sym(input$univar_qual_var),
+                    ylab="Sample Size", las = 2,
+                    names.arg = substr(names(table(data[,input$univar_qual_var])), 1, 9),col=rainbow(length(names(table(data[,input$univar_qual_var])))))
+          })
+          
+          output$stat_tbl <- renderPlot({
+            barplot(table(data[,input$univar_qual_var]), main = "Bar Chart ", 
+                    xlab=sym(input$univar_qual_var),
+                    ylab="Sample Size", las = 2,
+                    names.arg = substr(names(table(data[,input$univar_qual_var])), 1, 9),col=rainbow(length(names(table(data[,input$univar_qual_var])))))
+          })
+          
+          tabStat<-reactive({
+            table.tmp <- as.data.frame(table(data[,input$univar_qual_var]))
+            table.tmp<-cbind(table.tmp,table.tmp[[2]]/nrow(data)*100)
+          
+             colnames(table.tmp) <- c(input$univar_qual_var, "Sample Size", "Frequency %")
+                                   
+            table.tmp
+          })
+          
+          output$stat_tbl <- renderTable({ 
+              tabStat()
+            })
+          
+        }
+      }
+    }
+  })
  }
-# 
-# 
-
-# 
-# tabCentreDisp <- reactive({
-#   # Noms des caractéristiques
-#   dt =df[,input$radio]
-#  
-#   
-#   summary.tmp
-# })
-# output$centreDisp <- renderTable({tabCentreDisp()})
-# 
-# hist( as.numeric(as.character(dt[,input$radio])), freq = FALSE, cex.axis = 1.5, cex.main = 1.5,
-#       main = "Histogramme de la variable", col = "green",
-#       xlab = dt[1,input$radio] , ylab = "Densité de fréquences", las = 1,
-#       right = FALSE, cex.lab = 1.5)
-# 
-# 
-# tmp.hist <- hist(as.numeric(as.character(dt[,input$radio])) , plot = FALSE,
-#                  
-#                  right = FALSE)
-# # Courbe cumulative (effectifs)
-# plot(x = tmp.hist$breaks[-1], y = cumsum(tmp.hist$counts),
-#      xlab =sym(input$radio),
-#      ylab = "Effectifs cumulés", cex.axis = 1.5, cex.lab = 1.5,
-#      main = "Courbe cumulative ",
-#      type = "o", col = "green", lwd = 2, cex.main = 1.5)
