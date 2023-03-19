@@ -11,8 +11,14 @@ shinyUI(
                     menuItem("Data Exploration", tabName = "data_exp", icon=icon("check")),
                     menuItem("Statistical Tests", tabName = "stat_test", icon=icon("check")),
                     menuItem("Univariate Analysis", tabName = "univar", icon=icon("check"),
-                             menuSubItem("Quantitative",tabName = "univar_quant"),menuSubItem("Qualitative",tabName = "univar_qual")),
-                    
+                             menuSubItem("Quantitative",tabName = "univar_quant", icon=icon("check")),
+                             menuSubItem("Qualitative",tabName = "univar_qual", icon=icon("check"))
+                             ),
+                    menuItem("Biivariate Analysis", tabName = "Biivar", icon=icon("check"),
+                             menuSubItem("Quantitative/Quantitative",tabName = "bivar_quant_quant", icon=icon("check")),
+                             menuSubItem("Quantitative/Qualitative",tabName = "bivar_quant_qual", icon=icon("check")),
+                             menuSubItem("Qualitative/Qualitative",tabName = "bivar_qual_qual", icon=icon("check"))
+                             ),
                     menuItem("Real Time Data", tabName = "real_time", icon=icon("check"))
                   )
                   
@@ -197,15 +203,38 @@ shinyUI(
                             
                           ),
 
-                              tabItem(tabName = "univar_quant",
-                                       uiOutput("univar_quant_var"),
-                                       uiOutput("univar_quant_graph")
-                                       ),
-                              tabItem(tabName = "univar_qual",
-                                       uiOutput("univar_qual_var"),
-                                       uiOutput("univar_qual_graph")
-                                       )
-                            ,
+                    tabItem(tabName = "univar_quant",
+                             uiOutput("univar_quant_var"),
+                             uiOutput("univar_quant_graph")
+                           ),
+                    tabItem(tabName = "univar_qual",
+                             uiOutput("univar_qual_var"),
+                             uiOutput("univar_qual_graph")
+                           ),
+                    
+                    tabItem(tabName = "bivar_quant_quant",
+                            fluidRow(
+                              uiOutput("bivar_quant_quant_var1"),
+                              uiOutput("bivar_quant_quant_var2"),
+                              
+                            ),
+                            
+                            uiOutput("bivar_quant_quant_graph")
+                    ),
+                    tabItem(tabName = "bivar_quant_qual",
+                            
+                            uiOutput("bivar_quant_qual_var"),
+                            uiOutput("bivar_quant_qual_graph")
+                    ),
+                    tabItem(tabName = "bivar_qual_qual",
+                            fluidRow(
+                              uiOutput("bivar_qual_qual_var1"),
+                              uiOutput("bivar_qual_qual_var2")
+                                  
+                            ),
+                            
+                            uiOutput("bivar_qual_qual_graph")
+                    ),
                     tabItem(tabName = "real_time",
                             box(id="real_t_d",div(DT::dataTableOutput("real_time_data_tb")))
                     )

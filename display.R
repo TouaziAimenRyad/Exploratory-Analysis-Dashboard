@@ -123,6 +123,40 @@ add_select_ui<-function(input,output,data)
     selectInput('univar_qual_var', 'Select the variable to display the Analysis',names(data[grepl('factor|logical|character',sapply(data,class))]))
   })
   
+  #select var for bivariate anal
+  output$bivar_quant_quant_var1<-renderUI({
+  
+      selectInput('bivar_quant_quant_var1', 'Select the 1st variable (quantitative) to display the Analysis',names(data)[sapply(data, is.numeric)])
+
+  })
+  
+  output$bivar_quant_quant_var2<-renderUI({
+    df2<-data[,!names(data) %in% c(input$bivar_quant_quant_var1)]
+    selectInput('bivar_quant_quant_var2', 'Select the 2nd variable (quantitative) to display the Analysis',names(df2)[sapply(df2, is.numeric)])
+    
+  })
+  
+  
+  
+  output$bivar_quant_qual_var<-renderUI({
+    fluidRow(
+      selectInput('bivar_quant_qual_var1', 'Select the 1st variable (quantitative) to display the Analysis',names(data)[sapply(data, is.numeric)]),
+      selectInput('bivar_quant_qual_var2', 'Select the 2nd variable (qualitative) to display the Analysis',names(data[grepl('factor|logical|character',sapply(data,class))])),
+    )
+  })
+  
+  output$bivar_qual_qual_var1<-renderUI({
+  
+      selectInput('bivar_qual_qual_var1', 'Select the 1st variable (qualitative) to display the Analysis',names(data[grepl('factor|logical|character',sapply(data,class))]))
+    
+  })
+  output$bivar_qual_qual_var2<-renderUI({
+    df2<-data[,!names(data) %in% c(input$bivar_qual_qual_var1)]
+    selectInput('bivar_qual_qual_var2', 'Select the 2nd variable (qualitative) to display the Analysis',names(df2[grepl('factor|logical|character',sapply(data,class))]))
+    
+  })
+    
+  
   
 
 }

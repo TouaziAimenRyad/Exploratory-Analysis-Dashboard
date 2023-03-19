@@ -15,9 +15,12 @@ library(stats)
 library(mvShapiroTest)
 library(nortest)
 library(mvnormtest)
+library(Hmisc)
+library(UsingR)
 source('./display.R')
 source('./data_exp.R')
 source('./ana_univar.R')
+source('./ana_bivar.R')
 source('./test.R')
 source('./read.R')
 source('./missing_val.R')
@@ -54,6 +57,7 @@ source('./dummification.R')
 #condition you must handle missing values first before skipping to outliers and other stuff
 #your using if not null data do plots and stuff you need to add an else
 #fix labls on plots using this xlab = sym(input$univar_quant_var)
+#small loading problem with scatterplot histogrma in bivariate
 shinyServer(
   function(input,output)
   {

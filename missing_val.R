@@ -52,6 +52,8 @@ handeling_missing_values_quant<-function(input,output,data) # add a condition so
         data_exploration(input,output,data())
         run_test(input,output,data())
         univariate_ana(input,output,data())
+        bivariate_ana(input,output,data())
+        
         # exploration_server(input,output,data())
         # univaree_server(input,output, data())
         # Bivaree_server(input,output, data())
@@ -89,7 +91,7 @@ handeling_missing_values_quant<-function(input,output,data) # add a condition so
         data_exploration(input,output,data())
         run_test(input,output,data())
         univariate_ana(input,output,data())
-        
+        bivariate_ana(input,output,data())
         # exploration_server(input,output,data())
         # univaree_server(input,output, data())
         # Bivaree_server(input,output, data())
@@ -128,7 +130,7 @@ handeling_missing_values_quant<-function(input,output,data) # add a condition so
         data_exploration(input,output,data())
         run_test(input,output,data())
         univariate_ana(input,output,data())
-        
+        bivariate_ana(input,output,data())
         # exploration_server(input,output,data())
         # univaree_server(input,output, data())
         # Bivaree_server(input,output, data())
@@ -167,7 +169,7 @@ handeling_missing_values_quant<-function(input,output,data) # add a condition so
         data_exploration(input,output,data())
         run_test(input,output,data())
         univariate_ana(input,output,data())
-        
+        bivariate_ana(input,output,data())
         # exploration_server(input,output,data())
         # univaree_server(input,output, data())
         # Bivaree_server(input,output, data())
@@ -214,7 +216,7 @@ handeling_missing_values_qual<-function(input,output,data) #both NA and empty st
         data_exploration(input,output,data())
         run_test(input,output,data())
         univariate_ana(input,output,data())
-        
+        bivariate_ana(input,output,data())
         # exploration_server(input,output,data())
         # univaree_server(input,output, data())
         # Bivaree_server(input,output, data())
@@ -255,7 +257,7 @@ handeling_missing_values_qual<-function(input,output,data) #both NA and empty st
         data_exploration(input,output,data())
         run_test(input,output,data())
         univariate_ana(input,output,data())
-        
+        bivariate_ana(input,output,data())
         # exploration_server(input,output,data())
         # univaree_server(input,output, data())
         # Bivaree_server(input,output, data())

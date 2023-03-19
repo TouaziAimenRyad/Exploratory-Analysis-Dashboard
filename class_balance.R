@@ -30,7 +30,7 @@ class_rebalance<-function(input,output,data)
         data_exploration(input,output,data())
         run_test(input,output,data())
         univariate_ana(input,output,data())
-        
+        bivariate_ana(input,output,data())
         # exploration_server(input,output,data())
         # univaree_server(input,output, data())
         # Bivaree_server(input,output, data())
