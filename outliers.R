@@ -31,6 +31,7 @@ handle_outliers<-function(input,output,data)
         real_time_data(input,output,data())
         data_exploration(input,output,data())
         run_test(input,output,data())
+        univariate_ana(input,output,data())
         
         # exploration_server(input,output,data())
         # univaree_server(input,output, data())

@@ -5,11 +5,13 @@ shinyUI(
   dashboardPage(skin ="yellow", # change the header background color
                 dashboardHeader(title = "Exploratory Analysis", titleWidth = 400), 
                 dashboardSidebar(
-                  sidebarMenu(
+                  sidebarMenu(id="tabs",
                     menuItem("Initialise Data", tabName = "Init_data_tab", icon=icon("check")),
                     menuItem("Data Preparation", tabName = "data_prep", icon=icon("check")),
                     menuItem("Data Exploration", tabName = "data_exp", icon=icon("check")),
                     menuItem("Statistical Tests", tabName = "stat_test", icon=icon("check")),
+                    menuItem("Univariate Analysis", tabName = "univar", icon=icon("check")),
+                    
                     menuItem("Real Time Data", tabName = "real_time", icon=icon("check"))
                   )
                   
@@ -191,20 +193,20 @@ shinyUI(
                                        )
                                     )
                             )
-                            # sidebarLayout(
-                            #   sidebarPanel(
-                            #     uiOutput("var_test_1"),
-                            #     uiOutput("var_test_2"),
-                            #     uiOutput("type_test"),
-                            #    
-                            #     actionButton("submit_test", "Submit")
-                            #   ),
-                            #   mainPanel(
-                            #     plotOutput("plot_test"),
-                            #     verbatimTextOutput("result_test")
-                            #   )
-                            # )
+                            
                           ),
+                    tabItem(tabName = "univar",
+                            tabsetPanel(
+                              type="tab",
+                              tabPanel("Quantitative",
+                                       uiOutput("univar_quant_var"),
+                                       uiOutput("univar_quant_graph")
+                                       ),
+                              tabPanel("Qualitative",
+                                       uiOutput("univar_qual_var"),
+                                       uiOutput("univar_qual_graph")
+                                       )
+                            )),
                     tabItem(tabName = "real_time",
                             box(id="real_t_d",div(DT::dataTableOutput("real_time_data_tb")))
                     )

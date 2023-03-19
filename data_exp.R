@@ -26,8 +26,10 @@
        corr_mat<-round(cor(quant_cols),2)
        melted_data<-melt( corr_mat)
        print(melted_data)
-       output$corr_matrix<-renderPlot({ggplot(data = melted_data, aes(x=Var1, y=Var2, fill=value)) + 
-           geom_tile()})
+       output$corr_matrix<-renderPlot({
+           ggplot(data = melted_data, aes(x=Var1, y=Var2, fill=value)) + 
+           geom_tile()
+         })
      }
      
       #Create correlation plot based on selected columns

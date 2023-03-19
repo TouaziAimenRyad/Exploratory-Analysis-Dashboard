@@ -115,6 +115,16 @@ add_select_ui<-function(input,output,data)
   output$var_test_kend_1<-renderUI({  selectInput(inputId = "var_test_kend_1", label = "Choose the first Variable for KENDALL test", names(data)[sapply(data, is.numeric)])})
   output$var_test_kend_2<-renderUI({  selectInput(inputId = "var_test_kend_2", label = "Choose the second Variable for KENDALL test", names(data)[sapply(data, is.numeric)])})
   
+  #select var for univariate analysis
+  output$univar_quant_var = renderUI({
+    selectInput('univar_quant_var', 'Select the variable to display the Analysis',names(data)[sapply(data, is.numeric)])
+  })
+  output$univar_qual_var = renderUI({
+    selectInput('univar_qual_var', 'Select the variable to display the Analysis',names(data[grepl('factor|logical|character',sapply(data,class))]))
+  })
+  
+  
+
 }
 
 
