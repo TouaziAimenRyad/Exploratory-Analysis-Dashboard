@@ -17,6 +17,8 @@ library(nortest)
 library(mvnormtest)
 library(Hmisc)
 library(UsingR)
+library(pROC)
+library(cluster)
 source('./display.R')
 source('./data_exp.R')
 source('./ana_univar.R')
@@ -29,7 +31,7 @@ source('./normalisation.R')
 source('./class_balance.R')
 source('./dummification.R')
 
-
+source('./machine_learning.R')
 
 # add a function similar to init data view to keep a display at hand of your data
 
@@ -83,6 +85,6 @@ shinyServer(
     class_rebalance(input,output,data)
     dummification(input,output,data)
     rename_var(input,output,data)
-    
+    machine_learning(input,output)
   }
 )

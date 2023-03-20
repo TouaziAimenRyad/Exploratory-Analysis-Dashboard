@@ -14,12 +14,13 @@ shinyUI(
                              menuSubItem("Quantitative",tabName = "univar_quant", icon=icon("check")),
                              menuSubItem("Qualitative",tabName = "univar_qual", icon=icon("check"))
                              ),
-                    menuItem("Biivariate Analysis", tabName = "Biivar", icon=icon("check"),
+                    menuItem("Bivariate Analysis", tabName = "Biivar", icon=icon("check"),
                              menuSubItem("Quantitative/Quantitative",tabName = "bivar_quant_quant", icon=icon("check")),
                              menuSubItem("Quantitative/Qualitative",tabName = "bivar_quant_qual", icon=icon("check")),
                              menuSubItem("Qualitative/Qualitative",tabName = "bivar_qual_qual", icon=icon("check"))
                              ),
-                    menuItem("Real Time Data", tabName = "real_time", icon=icon("check"))
+                    menuItem("Real Time Data", tabName = "real_time", icon=icon("check")),
+                    menuItem("Machine Learning", tabName = "ml", icon=icon("check"))
                   )
                   
                   
@@ -237,6 +238,70 @@ shinyUI(
                     ),
                     tabItem(tabName = "real_time",
                             box(id="real_t_d",div(DT::dataTableOutput("real_time_data_tb")))
+                    ),
+                    tabItem(tabName = "ml",
+                            tabsetPanel(type='tab',
+                                        tabPanel("Penalized Logistic Regression",
+                                                 sidebarLayout(
+                                                   sidebarPanel(
+                                                     radioButtons("lr_sampling_method", "Sampling Method:",
+                                                                  choices = c("Under Sampling", "Over Sampling"),
+                                                                  selected = "Under Sampling"),
+                                                     sliderInput("lr_training_portion", "Training Portion:",
+                                                                 min = 0.5, max = 0.9, value = 0.8, step = 0.05),
+                                                     actionButton("lr_run_button", "Run Classifier"),
+                                                   ),
+                                                   mainPanel(
+                                                     tabsetPanel(
+                                                       tabPanel("Model",verbatimTextOutput("lr_model")),
+                                                       tabPanel("ROC Curve", plotOutput("lr_roc_plot")),
+                                                       #tabPanel("Cluster Plot", plotOutput("knn_cluster_plot")),
+                                                       tabPanel("Confusion Matrix",tableOutput("lr_conmtrx")),
+                                                       tabPanel("Performance Metrics",tableOutput("lr_tab_metrics"))
+                                                     )
+                                                   ))
+                                                 ),
+                                        tabPanel("KNN",
+                                                 sidebarLayout(
+                                                   sidebarPanel(
+                                                     radioButtons("knn_sampling_method", "Sampling Method:",
+                                                                  choices = c("Under Sampling", "Over Sampling"),
+                                                                  selected = "Under Sampling"),
+                                                     sliderInput("knn_training_portion", "Training Portion:",
+                                                                 min = 0.5, max = 0.9, value = 0.8, step = 0.05),
+                                                     actionButton("knn_run_button", "Run Classifier"),
+                                                   ),
+                                                   mainPanel(
+                                                     tabsetPanel(
+                                                       tabPanel("Model",verbatimTextOutput("knn_model")),
+                                                       tabPanel("ROC Curve", plotOutput("knn_roc_plot")),
+                                                       #tabPanel("Cluster Plot", plotOutput("knn_cluster_plot")),
+                                                       tabPanel("Confusion Matrix",tableOutput("knn_conmtrx")),
+                                                       tabPanel("Performance Metrics",tableOutput("knn_tab_metrics"))
+                                                     )
+                                                 ))
+                                                 ),
+                                        tabPanel("Random Forests",
+                                                 sidebarLayout(
+                                                   sidebarPanel(
+                                                     radioButtons("rf_sampling_method", "Sampling Method:",
+                                                                  choices = c("Under Sampling", "Over Sampling"),
+                                                                  selected = "Under Sampling"),
+                                                     sliderInput("rf_training_portion", "Training Portion:",
+                                                                 min = 0.5, max = 0.9, value = 0.8, step = 0.05),
+                                                     actionButton("rf_run_button", "Run Classifier"),
+                                                   ),
+                                                   mainPanel(
+                                                     tabsetPanel(
+                                                       tabPanel("Model",verbatimTextOutput("rf_model")),
+                                                       tabPanel("ROC Curve", plotOutput("rf_roc_plot")),
+                                                       #tabPanel("Cluster Plot", plotOutput("rf_cluster_plot")),
+                                                       tabPanel("Confusion Matrix",tableOutput("rf_conmtrx")),
+                                                       tabPanel("Performance Metrics",tableOutput("rf_tab_metrics"))
+                                                     )
+                                                   ))
+                                                 )
+                                        )
                     )
                   )
                   
