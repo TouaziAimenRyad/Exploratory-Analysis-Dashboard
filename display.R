@@ -152,7 +152,7 @@ add_select_ui<-function(input,output,data)
   })
   output$bivar_qual_qual_var2<-renderUI({
     df2<-data[,!names(data) %in% c(input$bivar_qual_qual_var1)]
-    selectInput('bivar_qual_qual_var2', 'Select the 2nd variable (qualitative) to display the Analysis',names(df2[grepl('factor|logical|character',sapply(data,class))]))
+    selectInput('bivar_qual_qual_var2', 'Select the 2nd variable (qualitative) to display the Analysis',names(df2[grepl('factor|logical|character',sapply(df2,class))]))
     
   })
     

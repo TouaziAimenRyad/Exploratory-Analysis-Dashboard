@@ -39,7 +39,7 @@ quant_quant<-function(input,output,data)
       if(!is.null(data))
       {
         
-        if((length(names(data)[sapply(data, is.numeric)])>0))
+        if((length(names(data)[sapply(data, is.numeric)])>1))
         {
           output$car_quant_quant<- renderTable({
             
@@ -108,8 +108,37 @@ quant_qual<-function(input,output,data)
         )
         
       ),
+      
     )
   })
+  
+  observeEvent(input$tabs,{
+    if(input$tabs=="bivar_quant_qual")
+    {
+      if(!is.null(data))
+      {
+        
+        if((length(names(data)[sapply(data, is.numeric)])>0)&(length(names(data)[grepl('factor|logical|character',sapply(data,class))])>0))
+        {
+          output$bar_quant_qual<-renderPlot({
+            var1<-sym(input$bivar_quant_qual_var1)
+            var2<-sym(input$bivar_quant_qual_var2)
+            ggplot(data, aes(x = !!var1, fill = !!var2)) + geom_bar()
+          })
+          
+          output$prl_box_quant_qual<-renderPlot({
+            d.stack <- melt(data, measure.vars = (names(data)[sapply(data, is.numeric)]))
+            # Boxplot basique
+            d.stack$value <- as.numeric(d.stack$value)
+            boxplot(d.stack$value ~ d.stack$variable , col=rainbow(length(names(data)[sapply(data, is.numeric)])) ,
+                    xlab = "Modalités", ylab = "Mesures")
+          })
+          
+        }
+      }
+    }
+  })
+  
 }
 
 
@@ -132,7 +161,75 @@ qual_qual<-function(input,output,data)
         )
         
       ),
+      column(width = 12,
+             box(
+               width = 12,
+               title = " Contingency Table ", status = "info", solidHeader = TRUE,
+               collapsible = TRUE,
+               tableOutput(outputId = "cont_tbl")
+               
+             )
+      )
     )
+  })
+  
+  observeEvent(input$tabs,{
+    if(input$tabs=="bivar_qual_qual")
+    {
+      if(!is.null(data))
+      {
+        
+        if((length(names(data)[grepl('factor|logical|character',sapply(data,class))])>1))
+        {
+          output$cont_tbl<-renderTable({
+            var1<-input$bivar_qual_qual_var1
+            var2<-input$bivar_qual_qual_var2
+            df<-cbind(data[,var1],data[,var2])
+            df<-as.data.frame(df)
+            colnames(df)<-c("var1","var2")
+            tab <-with(df,table(var1,var2))
+            tab
+          })
+          
+          output$stat_qual_qual<-renderTable({
+            force.df <- as.data.frame(matrix(NA, nrow = 3, ncol = 1))
+            rownames(force.df) = c("X2", "Phi2", "Cramer")
+            var1<-input$bivar_qual_qual_var1
+            var2<-input$bivar_qual_qual_var2
+            df<-cbind(data[,var1],data[,var2])
+            df<-as.data.frame(df)
+            colnames(df)<-c("var1","var2")
+            tab <-with(df,table(var1,var2))
+            
+            tab.indep = tab
+            n = sum(tab)
+            tab.rowSum = apply(tab, 2, sum)
+            tab.colSum = apply(tab, 1, sum)
+          
+            for(i in c(1:length(tab.colSum))){
+              for(j in c(1:length(tab.rowSum))){
+                tab.indep[i,j] = tab.colSum[i]*tab.rowSum[j]/n
+              }
+            }
+            
+            # Calcul du X²
+            force.df[1,1] = sum((tab-tab.indep)^2/tab.indep)
+            # Calcul du Phi²
+            force.df[2,1] = force.df[1,1]/n
+            # Calcul du Cramer
+            force.df[3,1] = sqrt(force.df[2,1]/(min(nrow(tab), ncol(tab))-1))
+            
+            force.df
+          },rownames=TRUE, colnames=FALSE)
+          output$bar_qual_qual<-renderPlot({
+            var1<-sym(input$bivar_qual_qual_var1)
+            var2<-sym(input$bivar_qual_qual_var2)
+            ggplot(data, aes(x = !!var2, fill = !!var1)) + geom_bar(position = "fill")
+          })
+          
+        }
+      }
+    }
   })
 }
 
