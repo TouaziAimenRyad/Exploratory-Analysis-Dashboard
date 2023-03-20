@@ -221,10 +221,11 @@ qual_qual<-function(input,output,data)
             
             force.df
           },rownames=TRUE, colnames=FALSE)
+          
           output$bar_qual_qual<-renderPlot({
             var1<-sym(input$bivar_qual_qual_var1)
             var2<-sym(input$bivar_qual_qual_var2)
-            ggplot(data, aes(x = !!var2, fill = !!var1)) + geom_bar(position = "fill")
+            ggplot(data, aes(x = !!var2, fill = !!var1)) + geom_bar(position = "dodge")
           })
           
         }
