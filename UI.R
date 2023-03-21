@@ -1,8 +1,10 @@
 library(shiny)
 library(shinydashboard)
 library(visdat)
+library(shinyalert)
+
 shinyUI(
-  dashboardPage(skin ="yellow", # change the header background color
+  dashboardPage(skin ="purple", # change the header background color
                 dashboardHeader(title = "Exploratory Analysis", titleWidth = 400), 
                 dashboardSidebar(
                   sidebarMenu(id="tabs",
@@ -26,7 +28,8 @@ shinyUI(
                   
                 ),
                 dashboardBody(
-                  tags$style(HTML("#bivar1 {padding: 10px ;} #bivar2 {padding: 10px ;} #bivar3 {padding: 10px ;} #missing_content {padding: 10px ;} button{margin: 5px 0;} #cov_corr_content{padding:10px} #statistics_content{padding:10px} #rename_content{padding:10px} #data_corr_content{padding:10px} #out_content{padding:10px;} #norm_content{padding:10px;} #dumm_content{padding:30px}  #norm_content_plot{padding-top:30px} ")),
+                  tags$style(HTML(" #bivar1 {padding: 10px ;} #bivar2 {padding: 10px ;} #bivar3 {padding: 10px ;} #missing_content {padding: 10px ;} button{margin: 5px 0;} #cov_corr_content{padding:10px} #statistics_content{padding:10px} #rename_content{padding:10px} #data_corr_content{padding:10px} #out_content{padding:10px;} #norm_content{padding:10px;} #dumm_content{padding:30px}  #norm_content_plot{padding-top:30px} ")),
+                  useShinyalert(),
                   tabItems(
                     tabItem(
                       tabName = "Init_data_tab",
@@ -164,12 +167,14 @@ shinyUI(
                             tabsetPanel(
                               type="tab",
                               tabPanel("Quantitative Variables",
-                                       
+                                       uiOutput("quant_v_message"),
                                        tableOutput("quant_detail")),
                               tabPanel("Qualitative Variables",
+                                       uiOutput("qual_v_message"),
                                        tableOutput("qual_detail")),
                               
                               tabPanel("Data Correlation",
+                                      uiOutput("corr_message"),
                                        fluidRow(id="data_corr_content",
                                                 sidebarLayout(
                                                   

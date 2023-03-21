@@ -16,6 +16,7 @@
 # 
  correlation_view<-function(input,output,data)
  {
+   
    if((!is.null(data))&(length(names(data)[sapply(data, is.numeric)])>0))
    {
      quant_cols <- data.frame(data[, sapply(data, is.numeric)])
@@ -110,11 +111,21 @@ qual_var_detail<-function(input,output,data)
 
 data_exploration<-function(input,output,data)
 {
-  quant_var_detail(input,output,data)
-  qual_var_detail(input,output,data)
-  # detailed_summary(input,output ,data)
-  correlation_view(input,output ,data)
-  print("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj")
+  if(sum(is.na(data))==0)
+  {
+    quant_var_detail(input,output,data)
+    qual_var_detail(input,output,data)
+    # detailed_summary(input,output ,data)
+    correlation_view(input,output ,data)
+  }
+  else
+  {
+    output$corr_message<-renderUI({ h3("You Need To Handle Missing Values First") })
+    output$quant_v_message<-renderUI({h3("You Need To Handle Missing Values First")})
+    output$qual_v_message<-renderUI({h3("You Need To Handle Missing Values First")})
+    
+  }
+  
   # 
   
 }
@@ -125,26 +136,35 @@ rename_var<-function(input,output,data)
 {
   observeEvent(input$rename,{
     df<-data()
-    if((!is.null(input$rename_var))&(!is.null(input$rename_new_var)))
+    if(sum(is.na(data()))==0)
     {
-      if((input$rename_var!="")&(input$rename_new_var)!="")
+      if((!is.null(input$rename_var))&(!is.null(input$rename_new_var)))
       {
-        colnames(df)[colnames(df) == input$rename_var] <- input$rename_new_var
-        data(df)
-        real_time_data(input,output,data())
-        data_exploration(input,output,data())
-        add_select_ui(input,output,data())
-        run_test(input,output,data())
-        univariate_ana(input,output,data())
-        bivariate_ana(input,output,data())
-        # exploration_server(input,output,data())
-        # univaree_server(input,output, data())
-        # Bivaree_server(input,output, data())
-        # Qnt_Qlt_server(input,output, data())
-        # Qlt_Qlt_server(input,output, data())
-        # Modele_server(input, output, data())
-        #print("les valeurs manquantes sont imputées")
+        if((input$rename_var!="")&(input$rename_new_var)!="")
+        {
+          colnames(df)[colnames(df) == input$rename_var] <- input$rename_new_var
+          data(df)
+          real_time_data(input,output,data())
+          data_exploration(input,output,data())
+          add_select_ui(input,output,data())
+          run_test(input,output,data())
+          univariate_ana(input,output,data())
+          bivariate_ana(input,output,data())
+          # exploration_server(input,output,data())
+          # univaree_server(input,output, data())
+          # Bivaree_server(input,output, data())
+          # Qnt_Qlt_server(input,output, data())
+          # Qlt_Qlt_server(input,output, data())
+          # Modele_server(input, output, data())
+          #print("les valeurs manquantes sont imputées")
+        }
       }
     }
+    else
+    {
+      shinyalert("Oops!", "You Need To Handle all the Missing Values First", type = "error")
+      
+    }
+    
   })
 }
