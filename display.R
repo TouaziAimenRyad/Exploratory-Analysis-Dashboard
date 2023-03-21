@@ -54,14 +54,14 @@ add_select_ui<-function(input,output,data)
   
   #select variable for handeling outliers for quantitative data 
   output$out_var_list = renderUI({
-    box(id="out_param",selectInput('out_var_list', 'Select the variable to remove the outliers from',names(data)[sapply(data, is.numeric)]),sliderInput("out_thr", "Outlier threshold:", min = 0, max = 100, value = 5))
+    box(id="out_param",width = "100%",selectInput('out_var_list', 'Select the variable to remove the outliers from',names(data)[sapply(data, is.numeric)]),sliderInput("out_thr", "Outlier threshold:", min = 0, max = 100, value = 5))
     
   })
   
   
   #select variable for normalization for quantitative data 
   output$norm_var_list = renderUI({
-    selectInput('norm_var_list', 'Select the variable to normalize',names(data)[sapply(data, is.numeric)])
+    fluidRow(column(8,offset = 2,selectInput('norm_var_list', 'Select the variable to normalize',names(data)[sapply(data, is.numeric)],width = "100%"))) 
   })
   
   #select variable to rebalnce for all data 
@@ -93,7 +93,7 @@ add_select_ui<-function(input,output,data)
   
   #slect var ti dummification
   output$dummi_var_list = renderUI({
-    selectInput('dummi_var_list', 'Select the variable to apply the Dummification on',names(data[grepl('factor|logical|character',sapply(data,class))]))
+    fluidRow(column(6,offset = 3,selectInput('dummi_var_list', 'Select the variable to apply the Dummification on',names(data[grepl('factor|logical|character',sapply(data,class))]),width = "100%")))
   })
   
   #select var for statstcical test
@@ -139,7 +139,7 @@ add_select_ui<-function(input,output,data)
   
   
   output$bivar_quant_qual_var<-renderUI({
-    fluidRow(
+    fluidRow(id="bivar2",
       selectInput('bivar_quant_qual_var1', 'Select the 1st variable (quantitative) to display the Analysis',names(data)[sapply(data, is.numeric)]),
       selectInput('bivar_quant_qual_var2', 'Select the 2nd variable (qualitative) to display the Analysis',names(data[grepl('factor|logical|character',sapply(data,class))])),
     )

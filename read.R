@@ -5,7 +5,7 @@ read_dataSet<-function(input,output,initial_data,data)
   if(is.null(infile)) return (NULL)
   ext <- tools::file_ext(infile$datapath)
   if(ext=="xls"){
-    d=read_xls(infile$datapath,header=input$header_present, sep =input$sep)
+    d=read_xls(infile$datapath)
     d[d == ""] <- NA
     data(d)
     initial_data(d)
